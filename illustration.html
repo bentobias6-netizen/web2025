@@ -27,8 +27,8 @@
       letter-spacing: -0.05em;
       transition: none;
     }
-    .nav-home::before { content: '◀'; font-size: 9px; color: #e8392a; }
-    .nav-home:hover { color: #e8392a; }
+    .nav-home-arrow { height: 9px; width: auto; display: inline-block; transform: scaleX(-1); }
+    .nav-home:hover { color: #f06292; }
     .site-logo { display: block; height: 5.025vw; width: auto; }
 
     .stage-wrap {
@@ -74,8 +74,8 @@
         padding-left: 28px;
       }
       .nav-home { font-size: 13px; gap: 6px; }
-      .nav-home::before { font-size: 7px; }
-      .site-logo { height: 46px; }
+      .nav-home-arrow { height: 7px; }
+      .site-logo { height: 36px; }
 
       .desktop-wrap { display: none; }
 
@@ -141,7 +141,7 @@
 <body>
 
   <nav>
-    <a class="nav-home" href="http://tobias.cool">home</a>
+    <a class="nav-home" href="http://tobias.cool"><img class="nav-home-arrow" src="https://ik.imagekit.io/dq3ybf3qb/nav%20arrow%20pink.png?updatedAt=1761779789570" alt="" />home</a>
     <img class="site-logo" src="https://imgtobias.s3.us-east-005.backblazeb2.com/horizontal+logo.png" alt="ben tobias" />
     <div style="width:60px"></div>
   </nav>
