@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ben tobias</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    @font-face {
+      font-family: 'Futura';
+      src: local('Futura Bold'), local('Futura-Bold'), local('FuturaBT-Bold');
+      font-weight: 700;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #fff; font-family: 'DM Sans', sans-serif; color: #111; }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 45px 8px 11.5px; max-width: 60vw; margin: 0 auto;
+    }
+    .nav-home {
+      display: flex; align-items: center; gap: 10px; font-size: 19px;
+      font-family: 'Futura','Futura PT','Century Gothic','Trebuchet MS',sans-serif;
+      font-weight: 700; color: #111; text-decoration: none;
+      letter-spacing: -0.05em;
+      transition: none;
+    }
+    .nav-home::before { content: '◀'; font-size: 9px; color: #e8392a; }
+    .nav-home:hover { color: #e8392a; }
+    .site-logo { display: block; height: 5.025vw; width: auto; }
+
+    .stage-wrap {
+      max-width: 60vw;
+      margin: 0 auto;
+      padding: 45px 8px 60px;
+    }
+    .stage-wrap.ready { visibility: visible; }
+
+    /* Stage: absolute-positioned container, height set by JS */
+    .stage {
+      position: relative;
+      width: 100%;
+    }
+
+    /* Each slot is always visible as a grey box */
+    .slot {
+      position: absolute;
+      border-radius: 0;
+      overflow: hidden;
+      background: #d0d0d0;
+      visibility: visible;
+      cursor: pointer;
+    }
+
+    /* Images start hidden; revealed individually once loaded */
+    .slot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      visibility: hidden;
+    }
+
+    /* ── MOBILE STAGE (hidden on desktop) ────────────────────────────────── */
+    .mobile-wrap  { display: none; }
+
+    @media (max-width: 768px) {
+      /* Hide desktop layout */
+      nav {
+        padding: 40px 8px 40px;
+        max-width: 100%;
+        margin: 0;
+        padding-left: 28px;
+      }
+      .nav-home { font-size: 13px; gap: 6px; }
+      .nav-home::before { font-size: 7px; }
+      .site-logo { height: 46px; }
+
+      .desktop-wrap { display: none; }
+
+      /* Show mobile layout */
+      .mobile-wrap {
+        display: block;
+        padding: 0 8px 40px;
+      }
+
+      /*
+        Mobile stage uses aspect-ratio matching the mock content area
+        (533 × 7871). Slots are absolutely positioned by percentage.
+      */
+      .mobile-stage {
+        position: relative;
+        width: 100%;
+      }
+
+      .mslot {
+        position: absolute;
+        overflow: hidden;
+        background: #d0d0d0;
+        cursor: pointer;
+      }
+      /* All mobile images display at natural size — no cropping, no letterboxing */
+      .mslot img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: unset;
+        visibility: hidden;
+      }
+
+      /* Widths and left positions only — JS sets top and stage height */
+      #m1  { left:  3.19%; width: 92.87%; }
+      #m2  { left:  2.81%; width: 93.43%; }
+      #m3  { left:  2.81%; width: 30.74%; }
+      #m4  { left: 34.16%; width: 30.74%; }
+      #m5  { left: 65.50%; width: 30.74%; }
+      #m6  { left:  3.19%; width: 93.25%; }
+      #m7  { left:  3.38%; width: 45.40%; }
+      #m8  { left: 50.47%; width: 45.40%; }
+      #m9  { left:  2.63%; width: 93.43%; }
+      #m10 { left:  2.81%; width: 93.43%; }
+      #m11 { left:  2.81%; width: 93.43%; }
+      #m12 { left:  1.50%; width: 94.37%; }
+      #m13 { left:  1.31%; width: 94.75%; }
+      #m14 { left:  3.56%; width: 94.00%; }
+      #m15 { left:  3.75%; width: 93.43%; }
+      #m16 { left:  3.94%; width: 92.31%; }
+      #m17 { left:  3.75%; width: 93.25%; }
+      #m18 { left:  3.38%; width: 94.56%; }
+      #m19 { left:  4.32%; width: 93.43%; }
+      #m20 { left:  4.50%; width: 92.50%; }
+      #m21 { left:  3.94%; width: 93.25%; }
+      #m22 { left:  3.56%; width: 93.25%; }
+      #m23 { left:  3.38%; width: 90.99%; }
+      #m24 { left:  4.13%; width: 91.56%; }
+      #m25, #m26, #m27 { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-home" href="http://tobias.cool">home</a>
+    <img class="site-logo" src="https://imgtobias.s3.us-east-005.backblazeb2.com/horizontal+logo.png" alt="ben tobias" />
+    <div style="width:60px"></div>
+  </nav>
+
+  <div class="desktop-wrap stage-wrap" id="wrap">
+    <div class="stage" id="stage">
+      <div class="slot" id="s1"><img id="i1" src="https://imgtobias.s3.us-east-005.backblazeb2.com/03mice.gif" alt="" /></div>
+      <div class="slot" id="s2"><img id="i2" src="https://imgtobias.s3.us-east-005.backblazeb2.com/02b.png" alt="" /></div>
+      <div class="slot" id="s3"><img id="i3" src="https://imgtobias.s3.us-east-005.backblazeb2.com/03b.png" alt="" /></div>
+      <div class="slot" id="s4"><img id="i4" src="https://imgtobias.s3.us-east-005.backblazeb2.com/04.gif" alt="" /></div>
+      <div class="slot" id="s5"><img id="i5" src="https://imgtobias.s3.us-east-005.backblazeb2.com/05.gif" alt="" /></div>
+      <div class="slot" id="s6"><img id="i6" src="https://imgtobias.s3.us-east-005.backblazeb2.com/06.png" alt="" /></div>
+      <div class="slot" id="s7"><img id="i7" src="https://imgtobias.s3.us-east-005.backblazeb2.com/07.png" alt="" /></div>
+      <div class="slot" id="s8"><img id="i8" src="https://imgtobias.s3.us-east-005.backblazeb2.com/08.png" alt="" /></div>
+      <div class="slot" id="s9"><img id="i9" src="https://imgtobias.s3.us-east-005.backblazeb2.com/09b.png" alt="" /></div>
+      <div class="slot" id="s10"><img id="i10" src="https://imgtobias.s3.us-east-005.backblazeb2.com/10.png" alt="" /></div>
+      <div class="slot" id="s11"><img id="i11" src="https://imgtobias.s3.us-east-005.backblazeb2.com/11.png" alt="" /></div>
+      <div class="slot" id="s12"><img id="i12" src="https://imgtobias.s3.us-east-005.backblazeb2.com/12.png" alt="" /></div>
+      <div class="slot" id="s13"><img id="i13" src="https://imgtobias.s3.us-east-005.backblazeb2.com/13.gif" alt="" /></div>
+      <div class="slot" id="s14"><img id="i14" src="https://imgtobias.s3.us-east-005.backblazeb2.com/14b.png" alt="" /></div>
+      <div class="slot" id="s15"><img id="i15" src="https://imgtobias.s3.us-east-005.backblazeb2.com/15b.png" alt="" /></div>
+      <div class="slot" id="s16"><img id="i16" src="https://imgtobias.s3.us-east-005.backblazeb2.com/16.png" alt="" /></div>
+      <div class="slot" id="s17"><img id="i17" src="https://imgtobias.s3.us-east-005.backblazeb2.com/17small.png" alt="" /></div>
+      <div class="slot" id="s18"><img id="i18" src="https://imgtobias.s3.us-east-005.backblazeb2.com/18.png" alt="" /></div>
+      <div class="slot" id="s19"><img id="i19" src="https://imgtobias.s3.us-east-005.backblazeb2.com/19b.png" alt="" /></div>
+      <div class="slot" id="s20"><img id="i20" src="https://imgtobias.s3.us-east-005.backblazeb2.com/20b.png" alt="" /></div>
+      <div class="slot" id="s21"><img id="i21" src="https://imgtobias.s3.us-east-005.backblazeb2.com/21b.png" alt="" /></div>
+      <div class="slot" id="s22"><img id="i22" src="https://imgtobias.s3.us-east-005.backblazeb2.com/22.gif" alt="" /></div>
+      <div class="slot" id="s23"><img id="i23" src="https://imgtobias.s3.us-east-005.backblazeb2.com/23b.png" alt="" /></div>
+      <div class="slot" id="s24"><img id="i24" src="https://imgtobias.s3.us-east-005.backblazeb2.com/24b.png" alt="" /></div>
+    </div>
+  </div>
+
+  <!-- ── MOBILE LAYOUT ─────────────────────────────────────────────────── -->
+  <div class="mobile-wrap">
+    <div class="mobile-stage">
+      <div class="mslot" id="m1"><img  src="https://imgtobias.s3.us-east-005.backblazeb2.com/03mice.gif"  alt="" /></div>
+      <div class="mslot" id="m2"><img  src="https://imgtobias.s3.us-east-005.backblazeb2.com/04.gif"       alt="" /></div>
+      <div class="mslot" id="m3"><img  src="https://imgtobias.s3.us-east-005.backblazeb2.com/06.png"       alt="" /></div>
+      <div class="mslot" id="m4"><img  src="https://imgtobias.s3.us-east-005.backblazeb2.com/07.png"       alt="" /></div>
+      <div class="mslot" id="m5"><img  src="https://imgtobias.s3.us-east-005.backblazeb2.com/08.png"       alt="" /></div>
+      <div class="mslot" id="m6"><img  src="https://imgtobias.s3.us-east-005.backblazeb2.com/05.gif"       alt="" /></div>
+      <div class="mslot" id="m7"><img  src="https://imgtobias.s3.us-east-005.backblazeb2.com/10.png"       alt="" /></div>
+      <div class="mslot" id="m8"><img  src="https://imgtobias.s3.us-east-005.backblazeb2.com/11.png"       alt="" /></div>
+      <div class="mslot" id="m9"><img  src="https://imgtobias.s3.us-east-005.backblazeb2.com/09b.png"      alt="" /></div>
+      <div class="mslot" id="m10"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/03b.png"      alt="" /></div>
+      <div class="mslot" id="m11"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/02b.png"      alt="" /></div>
+      <div class="mslot" id="m12"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/13.gif"       alt="" /></div>
+      <div class="mslot" id="m13"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/16.png"       alt="" /></div>
+      <div class="mslot" id="m14"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/14b.png"      alt="" /></div>
+      <div class="mslot" id="m15"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/15b.png"      alt="" /></div>
+      <div class="mslot" id="m16"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/12.png"       alt="" /></div>
+      <div class="mslot" id="m17"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/17small.png"  alt="" /></div>
+      <div class="mslot" id="m18"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/19b.png"      alt="" /></div>
+      <div class="mslot" id="m19"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/20b.png"      alt="" /></div>
+      <div class="mslot" id="m20"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/22.gif"       alt="" /></div>
+      <div class="mslot" id="m21"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/18.png"       alt="" /></div>
+      <div class="mslot" id="m22"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/21b.png"      alt="" /></div>
+      <div class="mslot" id="m23"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/23b.png"      alt="" /></div>
+      <div class="mslot" id="m24"><img src="https://imgtobias.s3.us-east-005.backblazeb2.com/24b.png"      alt="" /></div>
+    </div>
+  </div>
+
+  <script>
+    /*
+      MASONRY LAYOUT ENGINE
+      =====================
+      All images load first. Then JS positions every slot:
+
+      1. Stage pixel width W = wrap.clientWidth - 16
+      2. Each slot gets a pixel left and pixel width from mock fractions
+      3. Height = width / (naturalWidth / naturalHeight)  — NO clipping
+      4. Top is computed by tracking the "cursor" (next available y) for
+         each column group
+
+      COLUMN STRUCTURE (from illomockweb3.png blue guidelines):
+      ─────────────────────────────────────────────────────────
+      GAP = 6px everywhere
+
+      SECTION A: Two-column masonry (slots 1–5)
+        Left  col: x=0,         w=63.65% of W → slots 1, 4 stacked
+        Right col: x=left+gap,  w=35.35% of W → slots 2, 3, 5 stacked
+
+      SECTION B: Four-column row (slots 6–9)
+        Slots 6, 7, 8 are portrait-width (~19.5% each)
+        Slot 9 is wider (~35% on the right)
+        All share one row height = computed from the three portraits' shared H
+        Actually each image has its own aspect ratio → use the tallest to set row H,
+        then all images fill at that H (they have similar heights in the mock)
+        Strategy: solve for H so that no image is taller than its natural H
+        Simplest: all four images share the same H derived from the leftmost portrait
+        → H = w6 / ar(6) where w6 = 19.5% of W
+        Then widths = H * ar(i) for each
+
+      SECTION C: Three-column row (slots 10–12)
+        Slots 10, 11 portrait (~20% each), slot 12 big landscape (~56%)
+        Same shared-height approach
+
+      SECTION D: Two-column masonry (slots 13–16)
+        Left  col: ~47.5% → slots 13 (gif), 16 (flowers) stacked
+        Right col: ~50.5% → slots 14 (llama), 15 (city) stacked
+
+      SECTION E: Full-width (slot 17 snow globe)
+
+      SECTION F: Two-column masonry (slots 18–20, 22)
+        Left  col: ~51% → slot 18 (blue figure)
+        Right col: ~47% → slots 19, 20, 22 stacked
+
+      SECTION G: Two-column (slots 23, 24)
+        Left  col: ~51% → slot 23 (frog)
+        Right col: ~47% → slot 24 (whale)
+    */
+
+    const wrap  = document.getElementById('wrap');
+    const stage = document.getElementById('stage');
+    const imgs  = Array.from(document.querySelectorAll('.slot img'));
+    const GAP   = 6;
+
+    function gw() { return wrap.clientWidth - 16; }
+
+    // Returns the image's aspect ratio if loaded, or a neutral fallback (1.5)
+    // so layout math stays valid even for unloaded images.
+    function ar(id) {
+      const img = document.getElementById(id);
+      if (!img || !img.naturalWidth) return 1.5;
+      return img.naturalWidth / img.naturalHeight;
+    }
+
+    function place(slotId, left, top, width) {
+      const el = document.getElementById(slotId);
+      el.style.left  = Math.round(left)  + 'px';
+      el.style.top   = Math.round(top)   + 'px';
+      el.style.width = Math.round(width) + 'px';
+      return Math.round(width / ar('i' + slotId.slice(1)));
+    }
+
+      /*
+      TRUE LAYOUT STRUCTURE (measured from illomockweb3.png):
+      =========================================================
+      Two master columns running the full height:
+        LEFT  col: 63.4% of W
+        RIGHT col: 35.7% of W  (gap = 6px between)
+
+      Left column items (top to bottom):
+        slot 1  — full left col width
+        slot 4  — full left col width
+        [slot 6, slot 7, slot 8] — three across inside left col (~33% each)
+        [slot 10, slot 11] — two across inside left col (~50% each)
+
+      Right column items (top to bottom):
+        slot 2  — full right col width
+        slot 3  — full right col width
+        slot 5  — full right col width
+        slot 9  — full right col width
+
+      Then below both columns:
+        [slot 12] — full total width (big landscape)
+        ... sections D-G continue
+      */
+
+    function layout() {
+      const W = gw();
+
+      const wL = Math.round((W - GAP) * 0.634);  // left col width
+      const wR = W - GAP - wL;                    // right col width
+      const xL = 0;
+      const xR = wL + GAP;
+
+      let yL = 0;  // left col cursor
+      let yR = 0;  // right col cursor
+
+      // ── LEFT COLUMN ───────────────────────────────────────────────────────
+
+      // Slot 1
+      yL += place('s1', xL, yL, wL) + GAP;
+
+      // Slot 4
+      yL += place('s4', xL, yL, wL) + GAP;
+
+      // Slots 6, 7, 8 — three across inside left col, equal width
+      // Capture H so slots 10/11/12 can match it
+      let rowH_6789 = 0;
+      {
+        const w6 = Math.round((wL - 2*GAP) / 3);
+        const w7 = Math.round((wL - 2*GAP) / 3);
+        const w8 = wL - 2*GAP - w6 - w7;
+        const h6 = place('s6', xL,               yL, w6);
+        const h7 = place('s7', xL+w6+GAP,        yL, w7);
+        const h8 = place('s8', xL+w6+w7+2*GAP,   yL, w8);
+        rowH_6789 = Math.max(h6, h7, h8);
+        yL += rowH_6789 + GAP;
+      }
+
+      // ── RIGHT COLUMN ──────────────────────────────────────────────────────
+
+      // Slot 2
+      yR += place('s2', xR, yR, wR) + GAP;
+
+      // Slot 3
+      yR += place('s3', xR, yR, wR) + GAP;
+
+      // Slot 5
+      yR += place('s5', xR, yR, wR) + GAP;
+
+      // Slot 9
+      yR += place('s9', xR, yR, wR) + GAP;
+
+      // ── SYNC both columns ─────────────────────────────────────────────────
+      let y = Math.max(yL, yR);
+
+      // ── SLOTS 10, 11, 12 — full-width three-across, row 6/7/8 height + 10%
+      {
+        const rowH = Math.round(rowH_6789 * 1.01);
+        const w10 = Math.round(rowH * ar('i10'));
+        const w11 = Math.round(rowH * ar('i11'));
+        const w12 = Math.round(rowH * ar('i12'));
+        place('s10', 0,             y, w10);
+        place('s11', w10+GAP,       y, w11);
+        place('s12', w10+w11+2*GAP, y, w12);
+        y += rowH + GAP;
+      }
+
+      // ── SECTION D: slots 13,16 (left ~47.5%) | slots 14,15 (right ~52.5%) ─
+      {
+        const wL_D = Math.round((W - GAP) * 0.475);
+        const wR_D = W - GAP - wL_D;
+        let yLD = y, yRD = y;
+        yLD += place('s13', 0,         yLD, wL_D) + GAP;
+        yRD += place('s14', wL_D+GAP,  yRD, wR_D) + GAP;
+        yRD += place('s15', wL_D+GAP,  yRD, wR_D) + GAP;
+        yLD += place('s16', 0,         yLD, wL_D) + GAP;
+        y = Math.max(yLD, yRD);
+      }
+
+      // ── SLOT 17 — full width ──────────────────────────────────────────────
+      y += place('s17', 0, y, W) + GAP;
+
+      // ── SECTION F: slot 18+21 (left ~51%) | slots 19,20,22 (right ~49%) ─────
+      // Right column is laid out first to know its total height.
+      // Slot 21 is then sized to make the left column end at the same y.
+      {
+        const wL_F = Math.round((W - GAP) * 0.51);
+        const wR_F = W - GAP - wL_F;
+        let yLF = y, yRF = y;
+
+        // Right column: 19, 20, 22 stacked
+        yRF += place('s19', wL_F+GAP, yRF, wR_F) + GAP;
+        yRF += place('s20', wL_F+GAP, yRF, wR_F) + GAP;
+        yRF += place('s22', wL_F+GAP, yRF, wR_F) + GAP;
+
+        // Left column: slot 18 at natural height
+        yLF += place('s18', 0, yLF, wL_F) + GAP;
+
+        // Slot 21 fills exactly the remaining height so left bottom = right bottom
+        const s21El = document.getElementById('s21');
+        const s21Img = document.getElementById('i21');
+        const targetH21 = yRF - GAP - yLF; // exact height needed
+        s21El.style.left   = '0px';
+        s21El.style.top    = Math.round(yLF) + 'px';
+        s21El.style.width  = wL_F + 'px';
+        if (targetH21 > 0) {
+          // Force slot to target height; image covers it without distortion
+          s21El.style.height = Math.round(targetH21) + 'px';
+          s21Img.style.width  = '100%';
+          s21Img.style.height = '100%';
+          s21Img.style.objectFit = 'cover';
+        } else {
+          // Fallback: natural height
+          s21El.style.height = '';
+          s21Img.style.height = 'auto';
+          s21Img.style.objectFit = '';
+        }
+        yLF += Math.max(targetH21, 0) + GAP;
+
+        y = Math.max(yLF, yRF);
+      }
+
+      // ── SECTION G: slot 23 (left) | slot 24 (right) ──────────────────────
+      {
+        const wL_G = Math.round((W - GAP) * 0.51);
+        const wR_G = W - GAP - wL_G;
+        const h23 = place('s23', 0,         y, wL_G);
+        const h24 = place('s24', wL_G+GAP,  y, wR_G);
+        y += Math.max(h23, h24) + GAP;
+      }
+
+      stage.style.height = y + 'px';
+    }
+
+    // ── IMAGE LOADING ─────────────────────────────────────────────────────────
+    // Slots are always visible as grey boxes (positioned by layout immediately).
+    // Each img starts hidden and is revealed only once its image has loaded.
+
+    const loadedSet = new Set();
+
+    // Pre-seed any already-cached images
+    imgs.forEach(img => {
+      if (img.complete && img.naturalWidth) {
+        loadedSet.add(img.id);
+        img.style.visibility = 'visible';
+      }
+    });
+
+    function onImgLoad(img) {
+      loadedSet.add(img.id);
+      layout(); // re-layout with real aspect ratio now known
+      img.style.visibility = 'visible'; // reveal just this image
+    }
+
+    imgs.forEach(img => {
+      if (!loadedSet.has(img.id)) {
+        img.addEventListener('load',  () => onImgLoad(img));
+        img.addEventListener('error', () => { loadedSet.add(img.id); });
+      }
+    });
+
+    // Run layout immediately so all grey placeholders are sized and positioned
+    layout();
+
+    window.addEventListener('resize', layout);
+
+    // ── MOBILE LAYOUT ENGINE ──────────────────────────────────────────────────
+    // Since all images use height:auto, we must measure actual rendered heights
+    // after images load and set top positions in pixels.
+
+    const mstage = document.querySelector('.mobile-stage');
+    const mslots = Array.from(document.querySelectorAll('.mslot'));
+    const mimgs  = mslots.map(s => s.querySelector('img'));
+    const MGAP   = 6; // px gap between rows
+
+    function mplace(slotId, topPx) {
+      const el = document.getElementById(slotId);
+      el.style.top = Math.round(topPx) + 'px';
+    }
+
+    function mlayout() {
+      if (!mstage) return;
+      let y = 0;
+      const GAP = MGAP;
+
+      // m1 — full width
+      mplace('m1', y);
+      y += document.getElementById('m1').offsetHeight + GAP;
+
+      // m2 — full width
+      mplace('m2', y);
+      y += document.getElementById('m2').offsetHeight + GAP;
+
+      // m3, m4, m5 — three across at same top
+      mplace('m3', y);
+      mplace('m4', y);
+      mplace('m5', y);
+      const h345 = Math.max(
+        document.getElementById('m3').offsetHeight,
+        document.getElementById('m4').offsetHeight,
+        document.getElementById('m5').offsetHeight
+      );
+      y += h345 + GAP;
+
+      // m6 — full width
+      mplace('m6', y);
+      y += document.getElementById('m6').offsetHeight + GAP;
+
+      // m7, m8 — side by side
+      mplace('m7', y);
+      mplace('m8', y);
+      y += Math.max(
+        document.getElementById('m7').offsetHeight,
+        document.getElementById('m8').offsetHeight
+      ) + GAP;
+
+      // m9 — full width
+      mplace('m9', y);
+      y += document.getElementById('m9').offsetHeight + GAP;
+
+      // m10, m11 — stacked full width
+      mplace('m10', y);
+      y += document.getElementById('m10').offsetHeight + GAP;
+      mplace('m11', y);
+      y += document.getElementById('m11').offsetHeight + GAP;
+
+      // m12–m24 — all stacked full width
+      ['m12','m13','m14','m15','m16','m17','m18',
+       'm19','m20','m21','m22','m23','m24'].forEach(id => {
+        mplace(id, y);
+        y += document.getElementById(id).offsetHeight + GAP;
+      });
+
+      mstage.style.height = y + 'px';
+    }
+
+    // Reveal each mobile image and re-run layout as images load
+    const mloadedSet = new Set();
+    function onMImgLoad(img) {
+      mloadedSet.add(img.src);
+      mlayout();
+      img.style.visibility = 'visible';
+    }
+    mimgs.forEach(img => {
+      if (img.complete && img.naturalWidth) {
+        mloadedSet.add(img.src);
+        img.style.visibility = 'visible';
+      } else {
+        img.addEventListener('load',  () => onMImgLoad(img));
+        img.addEventListener('error', () => onMImgLoad(img));
+      }
+    });
+    mlayout();
+    window.addEventListener('resize', mlayout);
+  </script>
+
+</body>
+</html>
