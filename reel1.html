@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ben tobias</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    @font-face {
+      font-family: 'Futura';
+      src: local('Futura Bold'), local('Futura-Bold'), local('FuturaBT-Bold');
+      font-weight: 700;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #fff; font-family: 'DM Sans', sans-serif; color: #111; }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 45px 8px 11.5px; max-width: 60vw; margin: 0 auto;
+    }
+    .nav-home {
+      display: flex; align-items: center; gap: 10px; font-size: 19px;
+      font-family: 'Futura','Futura PT','Century Gothic','Trebuchet MS',sans-serif;
+      font-weight: 700; color: #111; text-decoration: none;
+      letter-spacing: -0.05em;
+      transition: none;
+    }
+    .nav-home-arrow { height: 9px; width: auto; display: inline-block; transform: scaleX(-1); }
+    .nav-home:hover { color: #f06292; }
+    .site-logo { display: block; height: 5.025vw; width: auto; }
+
+    .stage-wrap {
+      max-width: 60vw;
+      margin: 0 auto;
+      padding: 45px 8px 60px;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 */
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 40px 8px 40px;
+        max-width: 100%;
+        margin: 0;
+        padding-left: 28px;
+      }
+      .nav-home { font-size: 13px; gap: 6px; }
+      .nav-home-arrow { height: 7px; }
+      .site-logo { height: 40px; }
+
+      .stage-wrap {
+        max-width: 100%;
+        padding: 0 8px 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-home" href="http://tobias.cool"><img class="nav-home-arrow" src="https://ik.imagekit.io/dq3ybf3qb/nav%20arrow%20pink.png?updatedAt=1761779789570" alt="" />home</a>
+    <img class="site-logo" src="https://imgtobias.s3.us-east-005.backblazeb2.com/horizontal+logo.png" alt="ben tobias" />
+    <div style="width:60px"></div>
+  </nav>
+
+  <div class="stage-wrap">
+    <div class="video-container">
+      <iframe src="https://player.vimeo.com/video/159656486?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Motion design reel"></iframe>
+    </div>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+  </div>
+
+</body>
+</html>
