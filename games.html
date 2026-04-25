@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ben tobias – games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    @font-face {
+      font-family: 'Futura';
+      src: local('Futura Bold'), local('Futura-Bold'), local('FuturaBT-Bold');
+      font-weight: 700;
+    }
+    @font-face {
+      font-family: 'Futura';
+      src: local('Futura Medium'), local('Futura-Medium'), local('FuturaBT-Medium'),
+           local('Futura Book'), local('Futura-Book'), local('FuturaBT-Book');
+      font-weight: 500;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #fff; font-family: 'DM Sans', sans-serif; color: #111; }
+
+    /* ── NAV ───────────────────────────────────────────────────────────────── */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 45px 8px 11.5px; max-width: 60vw; margin: 0 auto;
+    }
+    .nav-home {
+      display: flex; align-items: center; gap: 10px; font-size: 19px;
+      font-family: 'Futura','Futura PT','Century Gothic','Trebuchet MS',sans-serif;
+      font-weight: 700; color: #111; text-decoration: none;
+      letter-spacing: -0.05em;
+      transition: none;
+    }
+    .nav-home-arrow { height: 9px; width: auto; display: inline-block; transform: scaleX(-1); }
+    .nav-home:hover { color: #f06292; }
+    .site-logo { display: block; height: 5.025vw; width: auto; }
+
+    /* ── INTRO TEXT ─────────────────────────────────────────────────────────── */
+    .intro-text {
+      max-width: 50vw; /* 75% of the 60vw gallery width */
+      margin: 35px auto 28px;
+      padding: 0;
+      text-align: left;
+      font-family: 'Futura','Futura PT','Century Gothic','Trebuchet MS',sans-serif;
+      font-weight: 500;
+      color: #111;
+      font-size: 12px;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      color: #111;
+    }
+
+    /* ── GALLERY ────────────────────────────────────────────────────────────── */
+    .gallery-wrap {
+      max-width: 60vw;
+      margin: 0 auto;
+      padding: 0 8px 30px;
+      margin-top: 50px;
+    }
+
+    .block {
+      display: flex;
+      flex-direction: row;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    /* Block 1: col1 = 55%, col2 = 45% (matches reference proportions) */
+    .block-1 .col-1 { flex: 0 0 57.5%; max-width: 57.5%; }
+    .block-1 .col-2 { flex: 1; }
+
+    /* Block 2: col1 = 40%, col2 = 60% */
+    .block-2 .col-1 { flex: 0 0 47.3%; max-width: 47.3%; }
+    .block-2 .col-2 { flex: 1; }
+
+    /* Block 3: col1 = 40%, col2 = 60% — tighter gap to block 4 */
+    .block-3 { gap: 3px; }
+    .block-3 { margin-bottom: 2px; }
+    .block-3 .col-1 { flex: 0 0 47.8%; max-width: 47.8%; }
+    .block-3 .col-2 { flex: 1; }
+
+    /* Block 4: CSS grid for pixel-perfect column widths */
+    .block-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      align-items: stretch;
+    }
+    .block-4 .col-1,
+    .block-4 .col-2,
+    .block-4 .col-3,
+    .block-4 .col-4 { flex: none; width: 100%; }
+
+    /* Blocks stretch so both cols reach the same height */
+    .block { align-items: stretch; }
+
+    .col img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #d0d0d0;
+    }
+
+    /* Single-image cols that need to match a taller neighbour:
+       the col becomes a flex container so the img can fill it */
+    .block-1 .col-2,
+    .block-2 .col-1,
+    .block-2 .col-2,
+    .block-3 .col-1,
+    .block-4 .col-1,
+    .block-4 .col-2,
+    .block-4 .col-3,
+    .block-4 .col-4 {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .block-1 .col-2 img,
+    .block-2 .col-1 img,
+    .block-2 .col-2 img,
+    .block-3 .col-1 img,
+    .block-4 .col-1 img,
+    .block-4 .col-2 img,
+    .block-4 .col-3 img,
+    .block-4 .col-4 img {
+      flex: 1;
+      height: 0;          /* let flex-grow drive height */
+      min-height: 0;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    /* Block 4 cols 2-4: fill col-1 height on desktop */
+    .video-wrap-b4-stretch { height: 100%; }
+    /* Scale iframes up slightly inside overflow:hidden wrappers to cover subpixel edges */
+    /* Subpixel fix: extend iframe by 1px on right and bottom (clipped by overflow:hidden on wrapper).
+       This guarantees no gap at fractional-pixel column widths without visibly clipping content. */
+    .video-wrap iframe {
+      width: calc(100% + 1px) !important;
+      height: calc(100% + 1px) !important;
+    }
+
+    /* ── CREDITS TEXT ───────────────────────────────────────────────────────── */
+    .credits {
+      max-width: 60vw;
+      margin: 0px auto 60px;
+      padding: 0 0px;
+      font-family: 'Futura','Futura PT','Century Gothic','Trebuchet MS',sans-serif;
+      font-weight: 500;
+      font-size: 10px;
+      line-height: 1.3;
+      letter-spacing: 0em;
+      color: #111;
+      margin-top: 1px;
+    }
+
+    /* ── MOBILE ─────────────────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav {
+        padding: 40px 28px 40px;
+        max-width: 100%;
+        margin: 0;
+      }
+      .nav-home { font-size: 13px; gap: 6px; }
+      .nav-home-arrow { height: 7px; }
+      .site-logo { height: 40px; }
+
+      .intro-text {
+        max-width: 90%;
+        padding: 0 16px;
+        margin: 4px auto 20px;
+        font-size: 12px;
+        text-align: left;
+      }
+
+      .gallery-wrap {
+        max-width: 100%;
+        padding: 0 0px 10px;
+      }
+
+      /* All blocks become single-column stacks on mobile */
+      .block {
+        flex-direction: column;
+      }
+
+      /* All cols go full width */
+      .block .col {
+        flex: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      /* Block 4: 2x2 grid on mobile with side padding matching column gap */
+      .block-4 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+      .block-4 .col {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .credits {
+        max-width: 100%;
+        padding: 0 16px;
+        font-size: 10px;
+        margin-top: 15px;
+        margin-bottom: 40px;
+      }
+
+      /* Video embed: switch from height:100% to aspect-ratio on mobile */
+      .video-wrap {
+        height: auto !important;
+      }
+      .video-wrap.video-wrap-b3c1 { aspect-ratio: 1310 / 2916; }
+      .block-1 .col-2 .video-wrap { aspect-ratio: 1154 / 1856; }
+      .block-4 .col-2 .video-wrap-b4-stretch { aspect-ratio: 686 / 1210; height: auto !important; }
+      .block-4 .col-3 .video-wrap-b4-stretch { aspect-ratio: 684 / 1210; height: auto !important; }
+      .block-4 .col-4 .video-wrap-b4-stretch { aspect-ratio: 690 / 1210; height: auto !important; }
+      .video-wrap iframe {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ──────────────────────────────────────────────────────────────── -->
+  <nav>
+    <a class="nav-home" href="http://tobias.cool">
+      <img class="nav-home-arrow" src="https://ik.imagekit.io/dq3ybf3qb/nav%20arrow%20pink.png?updatedAt=1761779789570" alt="" />
+      home
+    </a>
+    <img class="site-logo" src="https://imgtobias.s3.us-east-005.backblazeb2.com/horizontal+logo.png" alt="ben tobias" />
+    <div style="width:60px"></div>
+  </nav>
+
+  <!-- ── INTRO TEXT ────────────────────────────────────────────────────────── -->
+  <p class="intro-text">
+    A sample of work from game projects I've lead. These are a lot of fun, and I get to go through the entire process from pre-production to launch, creating UX animatics, look &amp; feel, illustration style, background painting, typography/ui, character animation + motion design, and implementation.
+  </p>
+
+  <!-- ── GALLERY ───────────────────────────────────────────────────────────── -->
+  <div class="gallery-wrap">
+
+    <!-- Block 1: col1 = 2 images, col2 = 1 image -->
+    <div class="block block-1">
+      <div class="col col-1">
+        <img src="https://images.tobias.cool/g_block01column01_01.png" alt="" loading="lazy" />
+        <img src="https://images.tobias.cool/g_block01column01_02.png" alt="" loading="lazy" />
+      </div>
+      <div class="col col-2">
+        <div class="video-wrap" style="position:relative; width:100%; height:100%; overflow:hidden;">
+          <iframe loading="lazy" title="Gumlet video player"
+            src="https://play.gumlet.io/embed/69ec025251e0355695c477ba?background=true&autoplay=true&loop=true&disable_player_controls=true&muted=true&preload=false"
+            style="border:none; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;"
+            referrerpolicy="origin"
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write;">
+          </iframe>
+          <!-- Transparent overlay blocks hover UI from the Gumlet player -->
+          <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></div>
+          <!-- Subpixel cover: 2px white line at bottom -->
+          <div style="position:absolute; bottom:0; left:0; width:100%; height:2px; background:#fff; z-index:2;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 2: col1 = 1 image, col2 = 1 image -->
+    <div class="block block-2">
+      <div class="col col-1">
+        <img src="https://images.tobias.cool/g_block02_column01_01.png" alt="" loading="lazy" />
+      </div>
+      <div class="col col-2">
+        <img src="https://images.tobias.cool/g_block02_column02_01.png" alt="" loading="lazy" />
+      </div>
+    </div>
+
+    <!-- Block 3: col1 = 1 image, col2 = 3 images -->
+    <div class="block block-3">
+      <div class="col col-1">
+        <div class="video-wrap video-wrap-b3c1" style="position:relative; width:100%; height:100%; overflow:hidden;">
+          <iframe loading="lazy" title="Gumlet video player"
+            src="https://play.gumlet.io/embed/69ec24304779ed7c8b581dc7?background=true&autoplay=true&loop=true&disable_player_controls=true&muted=true&preload=false"
+            style="border:none; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;"
+            referrerpolicy="origin"
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write;">
+          </iframe>
+          <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></div>
+        </div>
+      </div>
+      <div class="col col-2">
+        <img src="https://images.tobias.cool/g_block03_column02_01.png" alt="" loading="lazy" />
+        <img src="https://images.tobias.cool/g_block03_column02_02.gif" alt="" loading="lazy" />
+        <img src="https://images.tobias.cool/g_block03_column02_03.png" alt="" loading="lazy" />
+      </div>
+    </div>
+
+    <!-- Block 4: 4 columns, 1 video each -->
+    <div class="block block-4">
+      <div class="col col-1">
+        <div class="video-wrap video-wrap-b4" style="position:relative; width:100%; aspect-ratio:684/1210; overflow:hidden;">
+          <iframe loading="lazy" title="Gumlet video player"
+            src="https://play.gumlet.io/embed/69ed0baa80df8787f2cf82cb?background=true&autoplay=true&loop=true&disable_player_controls=true&muted=true&preload=false"
+            style="border:none; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;"
+            referrerpolicy="origin"
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write;">
+          </iframe>
+          <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></div>
+        </div>
+      </div>
+      <div class="col col-2">
+        <div class="video-wrap video-wrap-b4 video-wrap-b4-stretch" style="position:relative; width:100%; overflow:hidden;" data-ar="686/1210">
+          <iframe loading="lazy" title="Gumlet video player"
+            src="https://play.gumlet.io/embed/69ed0baa80df8787f2cf82cd?background=true&autoplay=true&loop=true&disable_player_controls=true&muted=true&preload=false"
+            style="border:none; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;"
+            referrerpolicy="origin"
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write;">
+          </iframe>
+          <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></div>
+        </div>
+      </div>
+      <div class="col col-3">
+        <div class="video-wrap video-wrap-b4 video-wrap-b4-stretch" style="position:relative; width:100%; overflow:hidden;" data-ar="684/1210">
+          <iframe loading="lazy" title="Gumlet video player"
+            src="https://play.gumlet.io/embed/69ecf45e51e0355695d6f914?background=true&autoplay=true&loop=true&disable_player_controls=true&muted=true&preload=false"
+            style="border:none; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;"
+            referrerpolicy="origin"
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write;">
+          </iframe>
+          <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></div>
+        </div>
+      </div>
+      <div class="col col-4">
+        <div class="video-wrap video-wrap-b4 video-wrap-b4-stretch" style="position:relative; width:100%; overflow:hidden;" data-ar="690/1210">
+          <iframe loading="lazy" title="Gumlet video player"
+            src="https://play.gumlet.io/embed/69ed0baa51e0355695d90631?background=true&autoplay=true&loop=true&disable_player_controls=true&muted=true&preload=false"
+            style="border:none; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;"
+            referrerpolicy="origin"
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write;">
+          </iframe>
+          <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></div>
+          <!-- Subpixel cover: 2px white line at bottom -->
+          <div style="position:absolute; bottom:0; left:0; width:100%; height:2px; background:#fff; z-index:2;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /gallery-wrap -->
+
+  <!-- ── CREDITS ───────────────────────────────────────────────────────────── -->
+  <p class="credits">
+    Sun, Frog, Turkey, and Duck AYFL characters designed by Emily Barrera<br />
+    Soccer frog design by Emily Barrera<br />
+    Illustrations for morphing swipe by Maxime Bourgeois<br />
+    Proficiency level meter design by Jan Vu Nam
+  </p>
+
+</body>
+</html>
