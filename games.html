@@ -60,6 +60,7 @@
       margin: 0 auto;
       padding: 0 8px 30px;
       margin-top: 50px;
+      background: #fff;
     }
 
     .block {
@@ -67,6 +68,7 @@
       flex-direction: row;
       gap: 6px;
       margin-bottom: 6px;
+      background: #fff;
     }
 
     .col {
@@ -74,6 +76,7 @@
       flex-direction: column;
       gap: 6px;
       min-width: 0;
+      background: #fff;
     }
 
     /* Block 1: col1 = 55%, col2 = 45% (matches reference proportions) */
@@ -140,6 +143,9 @@
       object-fit: cover;
       object-position: center top;
     }
+
+    /* Subpixel gap colour: any gap between iframe and wrapper edge shows white */
+    .video-wrap { background: #fff; }
 
     /* Block 4 cols 2-4: fill col-1 height on desktop */
     .video-wrap-b4-stretch { height: 100%; }
