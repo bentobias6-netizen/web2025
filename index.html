@@ -19,6 +19,11 @@
             line-height: 1.6;
             font-weight: 400;
             min-height: 100vh;
+            visibility: hidden;
+        }
+        
+        body.ready {
+            visibility: visible;
         }
       
         html {
@@ -269,5 +274,15 @@
             </p>
         </div>
     </div>
+    <script>
+        // Prevent FOUC: body starts visibility:hidden, reveal once fonts are ready
+        document.fonts.ready.then(function() {
+            document.body.classList.add('ready');
+        });
+        // Fallback: reveal after 500ms regardless
+        setTimeout(function() {
+            document.body.classList.add('ready');
+        }, 500);
+    </script>
 </body>
 </html>
