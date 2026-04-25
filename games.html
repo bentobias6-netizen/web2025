@@ -37,6 +37,7 @@
     .nav-home-arrow { height: 9px; width: auto; display: inline-block; transform: scaleX(-1); }
     .nav-home:hover { color: #f06292; }
     .site-logo { display: block; height: 5.025vw; width: auto; }
+    .nav-spacer { width: 60px; flex-shrink: 0; }
 
     /* ── INTRO TEXT ─────────────────────────────────────────────────────────── */
     .intro-text {
@@ -248,7 +249,7 @@
       home
     </a>
     <img class="site-logo" src="https://imgtobias.s3.us-east-005.backblazeb2.com/horizontal+logo.png" alt="ben tobias" />
-    <div style="width:60px"></div>
+    <div class="nav-spacer"></div>
   </nav>
 
   <!-- ── INTRO TEXT ────────────────────────────────────────────────────────── -->
@@ -371,5 +372,19 @@
     Proficiency level meter design by Jan Vu Nam
   </p>
 
+  <script>
+    (function() {
+      function syncNavSpacer() {
+        var home = document.querySelector('.nav-home');
+        var spacer = document.querySelector('.nav-spacer');
+        if (home && spacer) {
+          spacer.style.width = home.getBoundingClientRect().width + 'px';
+        }
+      }
+      window.addEventListener('load', syncNavSpacer);
+      window.addEventListener('resize', syncNavSpacer);
+      syncNavSpacer();
+    })();
+  </script>
 </body>
 </html>
