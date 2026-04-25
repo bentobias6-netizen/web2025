@@ -95,11 +95,15 @@
             margin: 0px 0;
         }
 
+        .nav-gap {
+            height: 18px;
+        }
+
         .nav-item {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            margin: 0;
-            line-height: 1.01871;
+            margin: -2px 0;
+            line-height: 0.3;
             letter-spacing: -1.1424px;
             display: flex;
             align-items: center;
@@ -117,21 +121,13 @@
         }
         
         @media (hover: hover) {
-            .nav-item:nth-child(1) a:hover {
-                color: #FF6E93;
-            }
-            
-            .nav-item:nth-child(2) a:hover {
-                color: #FFCD4D;
-            }
-            
-            .nav-item:nth-child(3) a:hover {
-                color: #00C8FF;
-            }
-            
-            .nav-item:nth-child(4) a:hover {
-                color: #FF6E93;
-            }
+            /* group 1 */
+            .nav-item:nth-child(1) a:hover { color: #FF6E93; } /* illustration - pink */
+            .nav-item:nth-child(2) a:hover { color: #FFCD4D; } /* character design - yellow */
+            .nav-item:nth-child(3) a:hover { color: #00C8FF; } /* games - blue */
+            /* group 2 */
+            .nav-item:nth-child(5) a:hover { color: #FF6E93; } /* motion design - pink */
+            .nav-item:nth-child(6) a:hover { color: #FFCD4D; } /* character reel - yellow */
         }
 
         .nav-arrow {
@@ -218,6 +214,7 @@
         <img src="https://ik.imagekit.io/dq3ybf3qb/worm5%20FIXED.png?updatedAt=1761782770740" alt="Colorful Ampersand Character" class="ampersand-img">
 
         <div class="nav-section">
+            <!-- group 1 -->
             <div class="nav-item">
                 <a href="illustration.html">
                     <span>illustration</span>
@@ -231,15 +228,24 @@
                 </a>
             </div>
             <div class="nav-item">
-                <a href="reel1.html">
-                    <span>motion design reel</span>
+                <a href="games.html">
+                    <span>games</span>
                     <span class="nav-arrow blue"></span>
+                </a>
+            </div>
+            <!-- gap -->
+            <div class="nav-gap"></div>
+            <!-- group 2 -->
+            <div class="nav-item">
+                <a href="reel1.html">
+                    <span>motion design</span>
+                    <span class="nav-arrow pink"></span>
                 </a>
             </div>
             <div class="nav-item">
                 <a href="reel2.html">
                     <span>character reel</span>
-                    <span class="nav-arrow pink"></span>
+                    <span class="nav-arrow yellow"></span>
                 </a>
             </div>
         </div>
