@@ -146,8 +146,6 @@
 
     /* Subpixel gap colour: any gap between iframe and wrapper edge shows white */
     .video-wrap { background: #fff; }
-    /* On desktop, mobile-video-pad is invisible — a transparent flex pass-through */
-    .mobile-video-pad { display: contents; }
 
     /* Block 4 cols 2-4: fill col-1 height on desktop */
     .video-wrap-b4-stretch { height: 100%; }
@@ -251,7 +249,9 @@
       .video-wrap::after  { bottom: 0; }
       .video-wrap.video-wrap-b3c1 { aspect-ratio: 1310 / 2916; }
       .block-1 .col-2 .video-wrap { aspect-ratio: 1154 / 1856; }
-      .mobile-video-pad { display: block; padding: 0 10%; background: #fff; }
+      /* 10% white-space padding around these two specific video embeds on mobile */
+      .block-1 > .col-2 { padding: 0 10%; }
+      .block-3 > .col-1 { padding: 0 10%; }
       .block-4 .col-2 .video-wrap-b4-stretch { aspect-ratio: 686 / 1210; height: auto !important; }
       .block-4 .col-3 .video-wrap-b4-stretch { aspect-ratio: 684 / 1210; height: auto !important; }
       .block-4 .col-4 .video-wrap-b4-stretch { aspect-ratio: 690 / 1210; height: auto !important; }
@@ -291,7 +291,6 @@
         <img src="https://images.tobias.cool/g_block01column01_02c.jpg" alt="" loading="lazy" />
       </div>
       <div class="col col-2">
-        <div class="mobile-video-pad">
         <div class="video-wrap" style="position:relative; width:100%; height:100%; overflow:hidden;">
           <iframe loading="lazy" title="Gumlet video player"
             src="https://play.gumlet.io/embed/69ec025251e0355695c477ba?background=true&autoplay=true&loop=true&disable_player_controls=true&muted=true&preload=false"
@@ -303,7 +302,6 @@
           <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></div>
           <!-- Subpixel cover: 2px white line at bottom -->
           <div style="position:absolute; bottom:0; left:0; width:100%; height:2px; background:#fff; z-index:2;"></div>
-        </div>
         </div>
       </div>
     </div>
@@ -321,7 +319,6 @@
     <!-- Block 3: col1 = 1 image, col2 = 3 images -->
     <div class="block block-3">
       <div class="col col-1">
-        <div class="mobile-video-pad">
         <div class="video-wrap video-wrap-b3c1" style="position:relative; width:100%; height:100%; overflow:hidden;">
           <iframe loading="lazy" title="Gumlet video player"
             src="https://play.gumlet.io/embed/69ec24304779ed7c8b581dc7?background=true&autoplay=true&loop=true&disable_player_controls=true&muted=true&preload=false"
@@ -330,7 +327,6 @@
             allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write;">
           </iframe>
           <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></div>
-        </div>
         </div>
       </div>
       <div class="col col-2">
